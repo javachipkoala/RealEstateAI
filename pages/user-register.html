@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>User Registration - RealEstate AI</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+<body>
+
+    <header class="main-navbar">
+
+    <a href="/" class="home-logo">
+        🏠 RealEstateAI
+    </a>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/pages/properties.html">Properties</a>
+        <a href="/#howItWorks">How It Works</a>
+        <a href="/#about">About</a>
+    </nav>
+
+    <div class="nav-buttons">
+        <a href="/pages/user-login.html" class="nav-login">
+            Login
+        </a>
+
+        <a href="/pages/user-register.html" class="nav-register">
+            Register
+        </a>
+    </div>
+
+</header>
+
+
+    <!-- Registration -->
+
+    <main class="auth-page">
+
+        <div class="auth-box">
+
+            <div class="auth-header">
+
+                <div class="auth-icon">
+                    👤
+                </div>
+
+                <h1>Create Account</h1>
+
+                <p>
+                    Create your RealEstate AI user account.
+                </p>
+
+            </div>
+
+
+            <form id="userRegisterForm">
+
+    <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="registerName"
+               placeholder="Enter your full name" required>
+    </div>
+
+    <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="registerEmail"
+               placeholder="Enter your email" required>
+    </div>
+
+    <div class="form-group">
+        <label>Phone</label>
+        <input type="tel" id="registerPhone"
+               placeholder="Enter your phone number" required>
+    </div>
+
+    <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="registerPassword"
+               placeholder="Create a password" required>
+    </div>
+
+    <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password" id="registerConfirmPassword"
+               placeholder="Confirm your password" required>
+    </div>
+
+    <button type="submit" class="primary-btn">
+        Create Account
+    </button>
+
+    <p id="registerMessage"></p>
+
+</form>
+
+
+            <p id="registerMessage"></p>
+
+
+            <div class="auth-footer">
+
+                <p>
+                    Already have an account?
+                    <a href="user-login.html">
+                        Login
+                    </a>
+                </p>
+
+                <p>
+                    Want to post properties?
+                    <a href="agent-register.html">
+                        Register as Agent
+                    </a>
+                </p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            © 2026 RealEstate AI Agent. All rights reserved.
+        </p>
+
+    </footer>
+
+
+<script>
+document.getElementById("userRegisterForm").addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const message = document.getElementById("registerMessage");
+
+    const name = document.getElementById("registerName").value.trim();
+    const email = document.getElementById("registerEmail").value.trim();
+    const phone = document.getElementById("registerPhone").value.trim();
+    const password = document.getElementById("registerPassword").value;
+    const confirmPassword = document.getElementById("registerConfirmPassword").value;
+
+    if (password !== confirmPassword) {
+        message.innerText = "Passwords do not match.";
+        message.style.color = "red";
+        return;
+    }
+
+    message.innerText = "Creating your account...";
+    message.style.color = "#2563eb";
+
+    try {
+
+        const response = await fetch("/api/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                phone: phone,
+                password: password
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+
+            message.innerText = "✓ Account created successfully!";
+            message.style.color = "green";
+
+            setTimeout(function() {
+                window.location.href = "user-login.html";
+            }, 1000);
+
+        } else {
+
+            message.innerText = result.message;
+            message.style.color = "red";
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        message.innerText = "Unable to connect to the server.";
+        message.style.color = "red";
+    }
+
+});
+</script>
+
+</body>
+
+</html>

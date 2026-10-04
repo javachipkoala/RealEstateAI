@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Agent Registration - RealEstate AI</title>
+
+<link rel="stylesheet" href="../css/style.css">
+```
+
+</head>
+
+<body>
+
+```
+<!-- Navigation -->
+
+<header class="main-navbar">
+
+    <a href="/" class="home-logo">
+        🏠 RealEstateAI
+    </a>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/pages/properties.html">Properties</a>
+        <a href="/#howItWorks">How It Works</a>
+        <a href="/#about">About</a>
+    </nav>
+
+    <div class="nav-buttons">
+        <a href="/pages/agent-login.html" class="nav-login">
+            Agent Login
+        </a>
+
+        <a href="/pages/user-login.html" class="nav-register">
+            User Login
+        </a>
+    </div>
+
+</header>
+
+
+<!-- Agent Registration -->
+
+<main class="auth-page">
+
+    <div class="auth-box">
+
+        <div class="auth-header">
+
+            <div class="auth-icon">
+                🏢
+            </div>
+
+            <h1>Become a Property Agent</h1>
+
+            <p>
+                Register to list and manage properties.
+            </p>
+
+        </div>
+
+
+        <form
+            id="agentRegisterForm"
+            enctype="multipart/form-data"
+        >
+
+            <label for="agentName">
+                Full Name
+            </label>
+
+            <input
+                type="text"
+                id="agentName"
+                placeholder="Enter your full name"
+                required
+            >
+
+
+            <label for="agencyName">
+                Agency / Company Name
+            </label>
+
+            <input
+                type="text"
+                id="agencyName"
+                placeholder="Enter agency name"
+                required
+            >
+
+
+            <label for="agentEmailRegister">
+                Email Address
+            </label>
+
+            <input
+                type="email"
+                id="agentEmailRegister"
+                placeholder="Enter your email"
+                required
+            >
+
+
+            <label for="agentPhone">
+                Phone Number
+            </label>
+
+            <input
+                type="tel"
+                id="agentPhone"
+                placeholder="Enter your phone number"
+                required
+            >
+
+
+            <label for="agentLocation">
+                Operating Location
+            </label>
+
+            <input
+                type="text"
+                id="agentLocation"
+                placeholder="City / Area"
+                required
+            >
+
+
+            <label for="agentPasswordRegister">
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="agentPasswordRegister"
+                placeholder="Create a password"
+                required
+            >
+
+
+            <label for="agentConfirmPassword">
+                Confirm Password
+            </label>
+
+            <input
+                type="password"
+                id="agentConfirmPassword"
+                placeholder="Confirm your password"
+                required
+            >
+
+
+            <!-- Agent Certificate -->
+
+            <label for="agentCertificate">
+                Agent Certificate / License
+            </label>
+
+            <input
+                type="file"
+                id="agentCertificate"
+                accept=".pdf,.jpg,.jpeg,.png"
+                required
+            >
+
+            <small>
+                Upload your real estate agent certificate,
+                license or other valid proof.
+            </small>
+
+
+            <button
+                type="submit"
+                class="auth-button"
+            >
+
+                Submit Agent Registration
+
+            </button>
+
+        </form>
+
+
+        <p id="agentRegisterMessage"></p>
+
+
+        <div class="auth-footer">
+
+            <p>
+                Already registered?
+
+                <a href="agent-login.html">
+                    Agent Login
+                </a>
+            </p>
+
+            <p>
+                Want to find properties?
+
+                <a href="user-register.html">
+                    User Registration
+                </a>
+            </p>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<footer>
+
+    <p>
+        © 2026 RealEstate AI Agent. All rights reserved.
+    </p>
+
+</footer>
+
+
+<script>
+
+    document
+        .getElementById("agentRegisterForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+
+            const name =
+                document.getElementById("agentName").value.trim();
+
+            const agency =
+                document.getElementById("agencyName").value.trim();
+
+            const email =
+                document.getElementById("agentEmailRegister").value.trim();
+
+            const phone =
+                document.getElementById("agentPhone").value.trim();
+
+            const location =
+                document.getElementById("agentLocation").value.trim();
+
+            const password =
+                document.getElementById("agentPasswordRegister").value;
+
+            const confirmPassword =
+                document.getElementById("agentConfirmPassword").value;
+
+            const certificate =
+                document.getElementById("agentCertificate").files[0];
+
+            const message =
+                document.getElementById("agentRegisterMessage");
+
+
+            if (password !== confirmPassword) {
+
+                message.innerText =
+                    "❌ Passwords do not match.";
+
+                message.style.color =
+                    "#dc2626";
+
+                return;
+            }
+
+
+            if (!certificate) {
+
+                message.innerText =
+                    "❌ Please upload your agent certificate.";
+
+                message.style.color =
+                    "#dc2626";
+
+                return;
+            }
+
+
+            message.innerText =
+                "Submitting agent registration...";
+
+            message.style.color =
+                "#2563eb";
+
+
+            try {
+
+                const formData =
+                    new FormData();
+
+                formData.append(
+                    "name",
+                    name
+                );
+
+                formData.append(
+                    "agency",
+                    agency
+                );
+
+                formData.append(
+                    "email",
+                    email
+                );
+
+                formData.append(
+                    "phone",
+                    phone
+                );
+
+                formData.append(
+                    "location",
+                    location
+                );
+
+                formData.append(
+                    "password",
+                    password
+                );
+
+                formData.append(
+                    "certificate",
+                    certificate
+                );
+
+
+                const response =
+                    await fetch(
+                        "/api/agent-register",
+                        {
+                            method: "POST",
+                            body: formData
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (result.success) {
+
+                    message.innerText =
+                        "✓ Registration submitted successfully! Your account is pending admin approval.";
+
+                    message.style.color =
+                        "#15803d";
+
+
+                    document
+                        .getElementById("agentRegisterForm")
+                        .reset();
+
+
+                } else {
+
+                    message.innerText =
+                        result.message ||
+                        "Registration failed.";
+
+                    message.style.color =
+                        "#dc2626";
+
+                }
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                message.innerText =
+                    "Unable to connect to the server.";
+
+                message.style.color =
+                    "#dc2626";
+
+            }
+
+        });
+
+</script>
+```
+
+</body>
+
+</html>

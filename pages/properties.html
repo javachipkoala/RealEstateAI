@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Properties - RealEstate AI</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="main-navbar">
+
+    <a href="/" class="home-logo">
+        🏠 RealEstateAI
+    </a>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/pages/properties.html">Properties</a>
+        <a href="/#howItWorks">How It Works</a>
+        <a href="/#about">About</a>
+    </nav>
+
+    <div class="nav-buttons">
+
+        <a href="/pages/user-login.html"
+           id="loginLink">
+            Login
+        </a>
+
+        <a href="/pages/user-register.html"
+           id="registerLink">
+            Register
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     PAGE HEADER
+========================= -->
+
+<section class="properties-header">
+
+    <h1>Explore Properties</h1>
+
+    <!-- AI SEARCH -->
+
+    <div class="ai-search-box">
+
+        <h2>🤖 AI Property Finder</h2>
+
+        <p>
+            Describe what property you are looking for
+            and AI will find suitable properties.
+        </p>
+
+        <div class="ai-search-row">
+
+            <input
+                type="text"
+                id="propertyAIRequirement"
+                placeholder="Example: 2 BHK in Kolhapur under 50 lakh"
+            >
+
+            <button
+                class="primary-btn"
+                onclick="propertyAIRecommendation()"
+            >
+                Find Matches
+            </button>
+
+        </div>
+
+        <p id="propertyAIMessage"></p>
+
+    </div>
+
+    <div id="aiRequirementBox"
+         class="ai-requirement-box">
+    </div>
+
+    <p>
+        Find properties that match your requirements.
+    </p>
+
+</section>
+
+
+<!-- =========================
+     SEARCH & FILTERS
+========================= -->
+
+<section class="property-search">
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Search by location..."
+    >
+
+    <select id="propertyType">
+
+        <option value="all">All Types</option>
+        <option value="apartment">Apartment</option>
+        <option value="house">House</option>
+        <option value="villa">Villa</option>
+        <option value="plot">Plot</option>
+
+    </select>
+
+    <select id="priceFilter">
+
+        <option value="all">Any Price</option>
+        <option value="30">Under ₹30 Lakh</option>
+        <option value="50">Under ₹50 Lakh</option>
+        <option value="100">Under ₹1 Crore</option>
+
+    </select>
+
+    <button
+        class="primary-btn"
+        onclick="filterProperties()"
+    >
+        Search
+    </button>
+
+</section>
+
+
+<!-- =========================
+     PROPERTY CARDS
+========================= -->
+
+<section
+    class="property-container"
+    id="propertyContainer">
+</section>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <p>
+        © 2026 RealEstate AI Agent. All rights reserved.
+    </p>
+
+</footer>
+
+
+<script>
+
+/* =====================================================
+   GLOBAL PROPERTY DATA
+===================================================== */
+
+let allProperties = [];
+
+
+/* =====================================================
+   PROPERTY IMAGE PATH
+===================================================== */
+
+function getPropertyImagePath(image) {
+
+    if (!image) {
+        return "";
+    }
+
+    let imagePath =
+        String(image).trim();
+
+
+    if (!imagePath.startsWith("/")) {
+
+        imagePath =
+            "/" + imagePath;
+
+    }
+
+
+    imagePath =
+        imagePath.replace(
+            "/uploads/uploads/",
+            "/uploads/"
+        );
+
+
+    return imagePath;
+}
+
+
+/* =====================================================
+   CREATE PROPERTY IMAGE GALLERY
+===================================================== */
+
+function createPropertyImages(property) {
+
+    if (
+        !property.images ||
+        !Array.isArray(property.images) ||
+        property.images.length === 0
+    ) {
+
+        return `
+
+            <div class="property-image">
+
+                <div style="
+                    font-size:60px;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    width:100%;
+                    height:100%;
+                ">
+                    🏠
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    const images =
+        property.images;
+
+
+    const propertyId =
+        property.id ||
+        property._id ||
+        Math.random();
+
+
+    const galleryId =
+        "gallery-" +
+        String(propertyId)
+        .replace(
+            /[^a-zA-Z0-9]/g,
+            ""
+        );
+
+
+    let imageHTML = "";
+
+
+    images.forEach(
+        function(image, index) {
+
+            const imagePath =
+                getPropertyImagePath(
+                    image
+                );
+
+
+            imageHTML += `
+
+                <img
+                    src="${imagePath}"
+                    class="property-slide"
+                    data-index="${index}"
+
+                    style="
+                        display:${
+                            index === 0
+                            ? "block"
+                            : "none"
+                        };
+                    "
+
+                    alt="${
+                        property.title ||
+                        "Property"
+                    }"
+
+                    onerror="
+                        this.style.display='none';
+                    "
+                >
+
+            `;
+
+        }
+    );
+
+
+    let controlsHTML = "";
+
+
+    if (images.length > 1) {
+
+        controlsHTML = `
+
+            <button
+                type="button"
+                class="
+                    gallery-arrow
+                    gallery-prev
+                "
+                onclick="
+                    changePropertyImage(
+                        '${galleryId}',
+                        -1
+                    )
+                "
+            >
+                &#10094;
+            </button>
+
+
+            <button
+                type="button"
+                class="
+                    gallery-arrow
+                    gallery-next
+                "
+                onclick="
+                    changePropertyImage(
+                        '${galleryId}',
+                        1
+                    )
+                "
+            >
+                &#10095;
+            </button>
+
+
+            <div class="gallery-counter">
+
+                <span
+                    id="${galleryId}-counter"
+                >
+                    1 / ${images.length}
+                </span>
+
+            </div>
+
+        `;
+
+    }
+
+
+    const galleryHTML = `
+
+        <div
+            class="
+                property-image
+                property-gallery
+            "
+
+            id="${galleryId}"
+
+            data-current="0"
+
+            data-total="${images.length}"
+        >
+
+            ${imageHTML}
+
+            ${controlsHTML}
+
+        </div>
+
+    `;
+
+
+    /*
+        Start automatic slideshow
+    */
+
+    if (images.length > 1) {
+
+        setTimeout(
+            function() {
+
+                const gallery =
+                    document.getElementById(
+                        galleryId
+                    );
+
+
+                if (!gallery) {
+                    return;
+                }
+
+
+                gallery._galleryTimer =
+                    setInterval(
+                        function() {
+
+                            changePropertyImage(
+                                galleryId,
+                                1,
+                                true
+                            );
+
+                        },
+                        4000
+                    );
+
+            },
+            100
+        );
+
+    }
+
+
+    return galleryHTML;
+
+}
+
+
+/* =====================================================
+   CHANGE PROPERTY IMAGE
+===================================================== */
+
+function changePropertyImage(
+    galleryId,
+    direction,
+    automatic = false
+) {
+
+    const gallery =
+        document.getElementById(
+            galleryId
+        );
+
+
+    if (!gallery) {
+        return;
+    }
+
+
+    const slides =
+        gallery.querySelectorAll(
+            ".property-slide"
+        );
+
+
+    if (slides.length <= 1) {
+        return;
+    }
+
+
+    let current =
+        parseInt(
+            gallery.dataset.current ||
+            "0"
+        );
+
+
+    slides[current].style.display =
+        "none";
+
+
+    current += direction;
+
+
+    if (current < 0) {
+
+        current =
+            slides.length - 1;
+
+    }
+
+
+    if (
+        current >=
+        slides.length
+    ) {
+
+        current = 0;
+
+    }
+
+
+    slides[current].style.display =
+        "block";
+
+
+    gallery.dataset.current =
+        current;
+
+
+    const counter =
+        document.getElementById(
+            galleryId +
+            "-counter"
+        );
+
+
+    if (counter) {
+
+        counter.innerText =
+            (current + 1) +
+            " / " +
+            slides.length;
+
+    }
+
+
+    /*
+        Restart slideshow
+        after manual click
+    */
+
+    if (!automatic) {
+
+        if (
+            gallery._galleryTimer
+        ) {
+
+            clearInterval(
+                gallery._galleryTimer
+            );
+
+        }
+
+
+        gallery._galleryTimer =
+            setInterval(
+                function() {
+
+                    changePropertyImage(
+                        galleryId,
+                        1,
+                        true
+                    );
+
+                },
+                4000
+            );
+
+    }
+
+}
+
+
+/* =====================================================
+   CREATE PROPERTY CARD
+===================================================== */
+
+function createPropertyCard(property) {
+
+    const card =
+        document.createElement(
+            "div"
+        );
+
+
+    card.className =
+        "property-card";
+
+
+    /*
+        IMPORTANT FIX:
+
+        Backend can return _id.
+        Use either _id or id.
+    */
+
+    const propertyId =
+        property._id ||
+        property.id;
+
+
+    card.innerHTML = `
+
+        ${createPropertyImages(property)}
+
+
+        <div class="property-info">
+
+            <span class="property-type">
+                ${property.type || "Property"}
+            </span>
+
+
+            <h2>
+                ${property.title || "Property"}
+            </h2>
+
+
+            <p class="location">
+                📍 ${
+                    property.location ||
+                    "Location not available"
+                }
+            </p>
+
+
+            <div class="property-details">
+
+                <span>
+                    🛏 ${
+                        property.bedrooms ||
+                        "-"
+                    } BHK
+                </span>
+
+
+                <span>
+                    🚿 ${
+                        property.bathrooms ||
+                        "-"
+                    } Bath
+                </span>
+
+
+                <span>
+                    📐 ${
+                        property.area ||
+                        "-"
+                    } sq.ft
+                </span>
+
+            </div>
+
+
+            <div class="property-bottom">
+
+                <strong>
+                    ₹${
+                        property.price ||
+                        "Price on request"
+                    }
+                </strong>
+
+
+                <a
+                    href="/pages/property-details.html?id=${propertyId}"
+                >
+                    View Details
+                </a>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    return card;
+
+}
+
+
+/* =====================================================
+   DISPLAY PROPERTIES
+===================================================== */
+
+function displayProperties(
+    properties
+) {
+
+    const propertyContainer =
+        document.getElementById(
+            "propertyContainer"
+        );
+
+
+    propertyContainer.innerHTML =
+        "";
+
+
+    if (
+        !properties ||
+        properties.length === 0
+    ) {
+
+        propertyContainer.innerHTML = `
+
+            <div class="no-properties">
+
+                <h3>
+                    No matching properties found.
+                </h3>
+
+                <p>
+                    Try changing your search filters.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    properties.forEach(
+        function(property) {
+
+            propertyContainer.appendChild(
+                createPropertyCard(
+                    property
+                )
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   LOAD PROPERTIES
+===================================================== */
+
+async function loadProperties() {
+
+    const propertyContainer =
+        document.getElementById(
+            "propertyContainer"
+        );
+
+
+    try {
+
+        /*
+            Check AI recommendations
+        */
+
+        const aiData =
+            localStorage.getItem(
+                "aiRecommendations"
+            );
+
+
+        if (aiData) {
+
+            const aiProperties =
+                JSON.parse(
+                    aiData
+                );
+
+
+            if (
+                Array.isArray(
+                    aiProperties
+                )
+            ) {
+
+                allProperties =
+                    aiProperties;
+
+                displayProperties(
+                    allProperties
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        /*
+            Normal properties
+        */
+
+        const response =
+            await fetch(
+                "/api/properties?status=Approved"
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Server returned " +
+                response.status
+            );
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        if (!result.success) {
+
+            throw new Error(
+                "Unable to load properties"
+            );
+
+        }
+
+
+        allProperties =
+            result.properties ||
+            [];
+
+
+        displayProperties(
+            allProperties
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Property loading error:",
+            error
+        );
+
+
+        propertyContainer.innerHTML = `
+
+            <div class="no-properties">
+
+                <h3>
+                    Unable to load properties.
+                </h3>
+
+                <p>
+                    Please make sure the backend
+                    server is running.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   SEARCH & FILTER
+===================================================== */
+
+function filterProperties() {
+
+    const searchInput =
+        document.getElementById(
+            "searchInput"
+        );
+
+
+    const propertyType =
+        document.getElementById(
+            "propertyType"
+        );
+
+
+    const priceFilter =
+        document.getElementById(
+            "priceFilter"
+        );
+
+
+    const search =
+        searchInput.value
+        .trim()
+        .toLowerCase();
+
+
+    const type =
+        propertyType.value
+        .toLowerCase();
+
+
+    const price =
+        priceFilter.value;
+
+
+    const filtered =
+        allProperties.filter(
+            function(property) {
+
+                /*
+                    LOCATION SEARCH
+                */
+
+                const location =
+                    String(
+                        property.location ||
+                        ""
+                    )
+                    .toLowerCase();
+
+
+                const title =
+                    String(
+                        property.title ||
+                        ""
+                    )
+                    .toLowerCase();
+
+
+                const matchesSearch =
+                    search === "" ||
+                    location.includes(search) ||
+                    title.includes(search);
+
+
+                /*
+                    PROPERTY TYPE
+                */
+
+                const propertyTypeValue =
+                    String(
+                        property.type ||
+                        ""
+                    )
+                    .toLowerCase();
+
+
+                const matchesType =
+                    type === "all" ||
+                    propertyTypeValue === type;
+
+
+                /*
+                    PRICE FILTER
+                */
+
+                let matchesPrice =
+                    true;
+
+
+                if (price !== "all") {
+
+                    const numericPrice =
+                        parsePropertyPrice(
+                            property.price
+                        );
+
+
+                    const limit =
+                        Number(price) *
+                        100000;
+
+
+                    matchesPrice =
+                        numericPrice <= limit;
+
+                }
+
+
+                return (
+                    matchesSearch &&
+                    matchesType &&
+                    matchesPrice
+                );
+
+            }
+        );
+
+
+    displayProperties(
+        filtered
+    );
+
+}
+
+
+/* =====================================================
+   CONVERT PROPERTY PRICE
+===================================================== */
+
+function parsePropertyPrice(
+    price
+) {
+
+    if (!price) {
+        return 0;
+    }
+
+
+    let text =
+        String(price)
+        .toLowerCase()
+        .replace(
+            /,/g,
+            ""
+        )
+        .replace(
+            /₹/g,
+            ""
+        )
+        .trim();
+
+
+    /*
+        Example:
+
+        50 lakh
+        50 lakhs
+    */
+
+    if (
+        text.includes("lakh")
+    ) {
+
+        const number =
+            parseFloat(
+                text
+            );
+
+
+        return number *
+            100000;
+
+    }
+
+
+    /*
+        Example:
+
+        1 crore
+    */
+
+    if (
+        text.includes("crore")
+    ) {
+
+        const number =
+            parseFloat(
+                text
+            );
+
+
+        return number *
+            10000000;
+
+    }
+
+
+    /*
+        Remove non-numeric
+        characters
+    */
+
+    const number =
+        parseFloat(
+            text.replace(
+                /[^0-9.]/g,
+                ""
+            )
+        );
+
+
+    return isNaN(number)
+        ? 0
+        : number;
+
+}
+
+
+/* =====================================================
+   AI PROPERTY RECOMMENDATION
+===================================================== */
+
+async function propertyAIRecommendation() {
+
+    const input =
+        document.getElementById(
+            "propertyAIRequirement"
+        );
+
+
+    const message =
+        document.getElementById(
+            "propertyAIMessage"
+        );
+
+
+    const requirement =
+        input.value.trim();
+
+
+    if (!requirement) {
+
+        message.innerText =
+            "Please describe the property you are looking for.";
+
+        message.style.color =
+            "red";
+
+        return;
+
+    }
+
+
+    message.innerText =
+        "🤖 AI is finding suitable properties...";
+
+
+    message.style.color =
+        "#2563eb";
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/recommend",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        requirement:
+                            requirement
+
+                    })
+
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "AI server error"
+            );
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        if (!result.success) {
+
+            message.innerText =
+                result.message ||
+                "No suitable properties found.";
+
+            message.style.color =
+                "red";
+
+            return;
+
+        }
+
+
+        localStorage.setItem(
+            "aiRecommendations",
+            JSON.stringify(
+                result.recommendations ||
+                []
+            )
+        );
+
+
+        localStorage.setItem(
+            "propertyRequirement",
+            requirement
+        );
+
+
+        message.innerText =
+            "✓ AI found " +
+            (
+                result.recommendations ||
+                []
+            ).length +
+            " matching properties.";
+
+
+        message.style.color =
+            "#15803d";
+
+
+        setTimeout(
+            function() {
+
+                location.reload();
+
+            },
+            500
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "AI recommendation error:",
+            error
+        );
+
+
+        message.innerText =
+            "Unable to connect to AI.";
+
+        message.style.color =
+            "red";
+
+    }
+
+}
+
+
+/* =====================================================
+   LOGIN / LOGOUT
+===================================================== */
+
+function updateLoginHeader() {
+
+    const loggedInUser =
+        localStorage.getItem(
+            "loggedInUser"
+        );
+
+
+    const loginLink =
+        document.getElementById(
+            "loginLink"
+        );
+
+
+    const registerLink =
+        document.getElementById(
+            "registerLink"
+        );
+
+
+    if (
+        loggedInUser === "true"
+    ) {
+
+        if (loginLink) {
+
+            loginLink.innerText =
+                "Dashboard";
+
+            loginLink.href =
+                "/pages/user-dashboard.html";
+
+        }
+
+
+        if (registerLink) {
+
+            registerLink.innerText =
+                "Logout";
+
+            registerLink.href =
+                "#";
+
+
+            registerLink.onclick =
+                function(event) {
+
+                    event.preventDefault();
+
+
+                    localStorage.removeItem(
+                        "loggedInUser"
+                    );
+
+                    localStorage.removeItem(
+                        "loggedInUserName"
+                    );
+
+                    localStorage.removeItem(
+                        "loggedInUserEmail"
+                    );
+
+                    localStorage.removeItem(
+                        "aiRecommendations"
+                    );
+
+                    localStorage.removeItem(
+                        "propertyRequirement"
+                    );
+
+
+                    window.location.href =
+                        "/pages/user-login.html";
+
+                };
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   START PAGE
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        loadProperties();
+
+        updateLoginHeader();
+
+    }
+);
+
+</script>
+
+
+<!-- MAIN JAVASCRIPT -->
+
+<script src="../js/main.js"></script>
+<script src="../js/auth.js"></script>
+
+</body>
+
+</html>

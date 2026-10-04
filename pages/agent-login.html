@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Agent Login - RealEstate AI</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+<body>
+
+    <header class="main-navbar">
+
+    <a href="/" class="home-logo">
+        🏠 RealEstateAI
+    </a>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/pages/properties.html">Properties</a>
+        <a href="/#howItWorks">How It Works</a>
+        <a href="/#about">About</a>
+    </nav>
+
+    <div class="nav-buttons">
+        <a href="/pages/user-login.html" class="nav-login">
+            User Login
+        </a>
+
+        <a href="/pages/agent-register.html" class="nav-register">
+            Agent Register
+        </a>
+    </div>
+
+</header>
+
+
+    <!-- Agent Login -->
+
+    <main class="auth-page">
+
+        <div class="auth-box">
+
+            <div class="auth-header">
+
+                <div class="auth-icon">
+                    🏢
+                </div>
+
+                <h1>Agent Login</h1>
+
+                <p>
+                    Manage your properties and inquiries.
+                </p>
+
+            </div>
+
+
+            <form id="agentLoginForm">
+
+                <label for="agentEmail">
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    id="agentEmail"
+                    placeholder="Enter your agent email"
+                    required
+                >
+
+
+                <label for="agentPassword">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="agentPassword"
+                    placeholder="Enter your password"
+                    required
+                >
+
+
+                <button type="submit" class="auth-button">
+                    Agent Login
+                </button>
+
+            </form>
+
+
+            <p id="agentLoginMessage"></p>
+
+
+            <div class="auth-footer">
+
+                <p>
+                    Don't have an agent account?
+                    <a href="agent-register.html">
+                        Register as Agent
+                    </a>
+                </p>
+
+                <p>
+                    Looking for properties?
+                    <a href="user-login.html">
+                        User Login
+                    </a>
+                </p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            © 2026 RealEstate AI Agent. All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <script>
+
+document
+    .getElementById("agentLoginForm")
+    .addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+
+        const email =
+            document
+            .getElementById("agentEmail")
+            .value
+            .trim();
+
+
+        const password =
+            document
+            .getElementById("agentPassword")
+            .value;
+
+
+        const message =
+            document
+            .getElementById("agentLoginMessage");
+
+
+        message.innerText =
+            "Logging in...";
+
+        message.style.color =
+            "#2563eb";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/agent-login",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            email: email,
+
+                            password: password
+
+                        })
+                    }
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (result.success) {
+
+                // Save agent login
+
+                localStorage.setItem(
+                    "agentLoggedIn",
+                    "true"
+                );
+
+
+                localStorage.setItem(
+                    "agentName",
+                    result.agent.name
+                );
+
+
+                localStorage.setItem(
+                    "agentEmail",
+                    result.agent.email
+                );
+
+
+                localStorage.setItem(
+                    "agentAgency",
+                    result.agent.agency
+                );
+
+
+                message.innerText =
+                    "✓ Login successful!";
+
+                message.style.color =
+                    "#15803d";
+
+
+                setTimeout(function() {
+
+                    window.location.href =
+                        "agent-dashboard.html";
+
+                }, 700);
+
+
+            } else {
+
+                message.innerText =
+                    result.message;
+
+                message.style.color =
+                    "#dc2626";
+
+            }
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            message.innerText =
+                "Unable to connect to the server.";
+
+            message.style.color =
+                "#dc2626";
+
+        }
+
+    });
+
+</script>
+
+</body>
+
+</html>

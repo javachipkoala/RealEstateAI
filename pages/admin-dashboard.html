@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard - RealEstate AI</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+<body class="dashboard-body">
+
+
+    <!-- Top Bar -->
+
+    <header class="main-navbar">
+
+    <a href="/" class="home-logo">
+        🏠 RealEstateAI
+    </a>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/pages/properties.html">Properties</a>
+        <a href="/#howItWorks">How It Works</a>
+        <a href="/#about">About</a>
+    </nav>
+
+    <div class="nav-buttons">
+        <a href="/pages/admin-dashboard.html" class="nav-login">
+            Dashboard
+        </a>
+
+        <a href="/pages/admin-login.html" class="nav-register">
+            Logout
+        </a>
+    </div>
+
+</header>
+
+    <div class="dashboard-layout">
+
+
+        <!-- Sidebar -->
+
+        <aside class="sidebar">
+
+            <h3>Admin Panel</h3>
+
+            <a href="#" class="active">
+                📊 Dashboard
+            </a>
+
+            <a href="#users">
+                👥 Users
+            </a>
+
+            <a href="#agents">
+                🏢 Agents
+            </a>
+
+            <a href="#properties">
+                🏠 Properties
+            </a>
+
+            <a href="#inquiries">
+                📩 Inquiries
+            </a>
+
+            <a href="#reports">
+                🚨 Reports
+            </a>
+
+            <a href="#settings">
+                ⚙️ Settings
+            </a>
+
+        </aside>
+
+
+        <!-- Main Content -->
+
+        <main class="dashboard-content">
+
+            <div class="dashboard-title">
+
+                <div>
+
+                    <h1>Dashboard</h1>
+
+                    <p>
+                        Welcome back, Administrator.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Statistics -->
+
+            <section class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        👥
+                    </div>
+
+                    <div>
+                        <p>Total Users</p>
+                        <h2>248</h2>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        🏢
+                    </div>
+
+                    <div>
+                        <p>Registered Agents</p>
+                        <h2>36</h2>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        🏠
+                    </div>
+
+                    <div>
+                        <p>Total Properties</p>
+                        <h2>124</h2>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        📩
+                    </div>
+
+                    <div>
+                        <p>Inquiries</p>
+                        <h2>87</h2>
+                    </div>
+
+                </div>
+
+            </section>
+
+<!-- Agent Registration Approvals -->
+
+<section class="dashboard-section">
+
+    <div class="section-heading">
+
+        <h2>Agent Registration Approvals</h2>
+
+        <span
+            class="pending-count"
+            id="agentPendingCount">
+
+            Loading...
+
+        </span>
+
+    </div>
+
+
+    <div
+        class="approval-list"
+        id="agentApprovalList">
+
+        <p>
+            Loading agent registrations...
+        </p>
+
+    </div>
+
+</section>
+            <!-- Pending Approvals -->
+
+            <section class="dashboard-section">
+
+                <div class="section-heading">
+
+                    <h2>Pending Approvals</h2>
+
+                    <span class="pending-count">
+                        5 Pending
+                    </span>
+
+                </div>
+
+
+                <div class="approval-list">
+
+
+                    <div class="approval-item">
+
+                        <div>
+
+                            <strong>
+                                Agent Registration
+                            </strong>
+
+                            <p>
+                                Rahul Patil · Kolhapur
+                            </p>
+
+                        </div>
+
+                        <div class="approval-actions">
+
+                            <button
+                                class="approve-btn"
+                                onclick="approveItem(this)"
+                            >
+                                Approve
+                            </button>
+
+                            <button
+                                class="reject-btn"
+                                onclick="rejectItem(this)"
+                            >
+                                Reject
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="approval-item">
+
+                        <div>
+
+                            <strong>
+                                Property Listing
+                            </strong>
+
+                            <p>
+                                3 BHK Villa · Pune
+                            </p>
+
+                        </div>
+
+                        <div class="approval-actions">
+
+                            <button
+                                class="approve-btn"
+                                onclick="approveItem(this)"
+                            >
+                                Approve
+                            </button>
+
+                            <button
+                                class="reject-btn"
+                                onclick="rejectItem(this)"
+                            >
+                                Reject
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="approval-item">
+
+                        <div>
+
+                            <strong>
+                                Agent Registration
+                            </strong>
+
+                            <p>
+                                Sneha Desai · Sangli
+                            </p>
+
+                        </div>
+
+                        <div class="approval-actions">
+
+                            <button
+                                class="approve-btn"
+                                onclick="approveItem(this)"
+                            >
+                                Approve
+                            </button>
+
+                            <button
+                                class="reject-btn"
+                                onclick="rejectItem(this)"
+                            >
+                                Reject
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section class="dashboard-section">
+
+    <div class="section-heading">
+        <h2>Property Listing Approvals</h2>
+        <span class="pending-count" id="propertyPendingCount">
+            Loading...
+        </span>
+    </div>
+
+    <div class="approval-list" id="propertyApprovalList">
+
+        <p>Loading properties...</p>
+
+    </div>
+
+</section>
+
+
+            <!-- Recent Activity -->
+
+            <section class="dashboard-section">
+
+                <div class="section-heading">
+
+                    <h2>Recent Activity</h2>
+
+                    <a href="#">
+                        View All
+                    </a>
+
+                </div>
+
+
+                <div class="activity-table">
+
+                    <div class="table-header">
+
+                        <span>User / Agent</span>
+                        <span>Activity</span>
+                        <span>Date</span>
+                        <span>Status</span>
+
+                    </div>
+
+
+                    <div class="table-row">
+
+                        <span>Mayuresh Mane</span>
+
+                        <span>
+                            Registered as User
+                        </span>
+
+                        <span>Today</span>
+
+                        <span class="status-active">
+                            Active
+                        </span>
+
+                    </div>
+
+
+                    <div class="table-row">
+
+                        <span>Rahul Patil</span>
+
+                        <span>
+                            Added Property
+                        </span>
+
+                        <span>Today</span>
+
+                        <span class="status-pending">
+                            Pending
+                        </span>
+
+                    </div>
+
+
+                    <div class="table-row">
+
+                        <span>Sneha Desai</span>
+
+                        <span>
+                            Agent Registration
+                        </span>
+
+                        <span>Yesterday</span>
+
+                        <span class="status-pending">
+                            Pending
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </main>
+
+    </div>
+
+<script>
+async function loadPendingProperties() {
+
+    const list =
+        document.getElementById("propertyApprovalList");
+
+    const count =
+        document.getElementById("propertyPendingCount");
+
+    if (!list) {
+        return;
+    }
+
+    try {
+
+        const response =
+            await fetch("/api/properties?status=Pending");
+
+        const result =
+            await response.json();
+
+        if (!result.success) {
+            list.innerHTML =
+                "<p>Unable to load properties.</p>";
+            return;
+        }
+
+        list.innerHTML = "";
+
+        count.innerText =
+            result.properties.length + " Pending";
+
+        if (result.properties.length === 0) {
+
+            list.innerHTML =
+                "<p>No pending property listings.</p>";
+
+            return;
+        }
+
+        result.properties.forEach(function(property) {
+
+            const item =
+                document.createElement("div");
+
+            item.className = "approval-item";
+
+            item.innerHTML = `
+                <div>
+                    <strong>
+                        ${property.title}
+                    </strong>
+
+                    <p>
+                        ${property.location}
+                        · ${property.price} INR
+                    </p>
+
+                    <p>
+                        ${property.bedrooms} BHK
+                        · ${property.area} sq.ft
+                    </p>
+                </div>
+
+                <div class="approval-actions">
+
+                    <button
+                        class="approve-btn"
+                        onclick="approveMongoProperty('${property._id}', this)"
+                    >
+                        Approve
+                    </button>
+
+                    <button
+                        class="reject-btn"
+                        onclick="rejectMongoProperty(this)"
+                    >
+                        Reject
+                    </button>
+
+                </div>
+            `;
+
+            list.appendChild(item);
+
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        list.innerHTML =
+            "<p>Unable to connect to the server.</p>";
+    }
+}
+
+
+async function approveMongoProperty(propertyId, button) {
+
+    try {
+
+        const response = await fetch(
+            "/api/properties/" + propertyId + "/approve",
+            {
+                method: "PUT"
+            }
+        );
+
+        const result =
+            await response.json();
+
+        if (result.success) {
+
+            const item =
+                button.closest(".approval-item");
+
+            item.remove();
+
+            loadPendingProperties();
+
+            alert("Property approved successfully!");
+
+        } else {
+
+            alert(result.message);
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Unable to connect to the server.");
+    }
+}
+
+
+function rejectMongoProperty(button) {
+
+    const item =
+        button.closest(".approval-item");
+
+    item.remove();
+}
+
+
+loadPendingProperties();
+</script>
+<script>
+
+async function loadAgentRegistrations() {
+
+    const agentList =
+        document.getElementById(
+            "agentApprovalList"
+        );
+
+    const pendingCount =
+        document.getElementById(
+            "agentPendingCount"
+        );
+
+
+    if (!agentList) return;
+
+
+    try {
+
+        const response =
+            await fetch("/api/agents");
+
+        const result =
+            await response.json();
+
+
+        if (!result.success) {
+
+            agentList.innerHTML =
+                "<p>Unable to load agents.</p>";
+
+            return;
+        }
+
+
+        const agents =
+            result.agents;
+
+
+        const pendingAgents =
+            agents.filter(function(agent) {
+
+                return agent.status === "Pending";
+
+            });
+
+
+        pendingCount.innerText =
+            pendingAgents.length +
+            " Pending";
+
+
+        if (pendingAgents.length === 0) {
+
+            agentList.innerHTML = `
+                <div class="inquiry-item">
+
+                    <p>
+                        No pending agent registrations.
+                    </p>
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        agentList.innerHTML = "";
+
+
+        pendingAgents.forEach(function(agent) {
+
+            const item =
+                document.createElement("div");
+
+            item.className =
+                "approval-item";
+
+
+            item.innerHTML = `
+
+                <div>
+
+                    <h3>
+                        🏢 ${agent.name}
+                    </h3>
+
+                    <p>
+                        <strong>Agency:</strong>
+                        ${agent.agency}
+                    </p>
+
+                    <p>
+                        <strong>Email:</strong>
+                        ${agent.email}
+                    </p>
+
+                    <p>
+                        <strong>Phone:</strong>
+                        ${agent.phone}
+                    </p>
+
+                    <p>
+                        <strong>Location:</strong>
+                        ${agent.location}
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+                        ${agent.status}
+                    </p>
+
+                    <p>
+                        <strong>Certificate:</strong>
+                        ${agent.certificate}
+                    </p>
+
+                    <br>
+
+                    <a
+                        href="${agent.certificate_path}"
+                        target="_blank"
+                        class="secondary-btn">
+
+                        📄 View Certificate
+
+                    </a>
+
+                </div>
+
+
+                <div>
+
+                    <button
+                        class="primary-btn"
+                        onclick="approveAgent('${agent._id}')">
+
+                        ✓ Approve
+
+                    </button>
+
+
+                    <button
+                        class="logout-btn"
+                        onclick="rejectAgent('${agent._id}')">
+
+                        ✕ Reject
+
+                    </button>
+
+                </div>
+
+            `;
+
+
+            agentList.appendChild(item);
+
+        });
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        agentList.innerHTML = `
+            <p>
+                Unable to connect to the server.
+            </p>
+        `;
+
+    }
+
+}
+
+
+async function approveAgent(agentId) {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/agents/" +
+                agentId +
+                "/approve",
+                {
+                    method: "PUT"
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (result.success) {
+
+            alert(
+                "Agent approved successfully!"
+            );
+
+            loadAgentRegistrations();
+
+        } else {
+
+            alert(result.message);
+
+        }
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Unable to approve agent."
+        );
+
+    }
+
+}
+
+
+async function rejectAgent(agentId) {
+
+    const confirmReject =
+        confirm(
+            "Are you sure you want to reject this agent?"
+        );
+
+
+    if (!confirmReject) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/agents/" +
+                agentId +
+                "/reject",
+                {
+                    method: "PUT"
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (result.success) {
+
+            alert(
+                "Agent rejected."
+            );
+
+            loadAgentRegistrations();
+
+        } else {
+
+            alert(result.message);
+
+        }
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Unable to reject agent."
+        );
+
+    }
+
+}
+
+
+loadAgentRegistrations();
+
+</script>
+<script>
+
+function adminLogout() {
+
+    localStorage.removeItem("adminLoggedIn");
+    localStorage.removeItem("adminUsername");
+
+    window.location.href =
+        "admin-login.html";
+}
+
+</script>
+
+    <script src="../js/main.js"></script>
+
+</body>
+
+</html>

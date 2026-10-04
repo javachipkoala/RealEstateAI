@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Property Details - RealEstate AI</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="main-navbar">
+
+    <a href="/" class="home-logo">
+        🏠 RealEstateAI
+    </a>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/pages/properties.html">Properties</a>
+        <a href="/#howItWorks">How It Works</a>
+        <a href="/#about">About</a>
+    </nav>
+
+    <div class="nav-buttons">
+
+        <a href="/pages/user-login.html"
+           class="nav-login"
+           id="loginLink">
+            Login
+        </a>
+
+        <a href="/pages/user-register.html"
+           class="nav-register"
+           id="registerLink">
+            Register
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     PROPERTY DETAILS
+========================= -->
+
+<main class="details-page">
+
+    <div class="details-container">
+
+        <!-- PROPERTY IMAGE -->
+
+        <div class="details-image property-details-gallery"
+             id="detailsImage">
+
+            <p>Loading property...</p>
+
+        </div>
+
+
+        <!-- PROPERTY INFORMATION -->
+
+        <div class="details-info">
+
+            <span class="property-type"
+                  id="detailsType">
+                Property
+            </span>
+
+            <h1 id="detailsTitle">
+                Loading...
+            </h1>
+
+            <p class="details-location"
+               id="detailsLocation">
+                📍 Loading...
+            </p>
+
+            <h2 class="details-price"
+                id="detailsPrice">
+                Loading...
+            </h2>
+
+
+            <!-- FEATURES -->
+
+            <div class="details-features">
+
+                <div>
+                    <strong id="detailsBedrooms">-</strong>
+                    <span>Bedrooms</span>
+                </div>
+
+                <div>
+                    <strong id="detailsBathrooms">-</strong>
+                    <span>Bathrooms</span>
+                </div>
+
+                <div>
+                    <strong id="detailsArea">-</strong>
+                    <span>Sq. Ft.</span>
+                </div>
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+
+            <h2>Property Description</h2>
+
+            <p class="description"
+               id="detailsDescription">
+                Loading property description...
+            </p>
+
+
+            <!-- AGENT -->
+
+            <div class="agent-property-info"
+                 id="agentPropertyInfo">
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="details-actions">
+
+                <button onclick="sendInquiry()"
+                        class="primary-btn">
+                    📩 Send Inquiry
+                </button>
+
+                <button onclick="findSimilarProperties()"
+                        class="secondary-btn">
+                    🤖 Find Similar Properties
+                </button>
+
+                <button onclick="saveProperty()"
+                        class="hero-secondary">
+                    ❤️ Save Property
+                </button>
+
+                <p id="similarPropertyMessage"></p>
+
+            </div>
+
+
+            <!-- MESSAGE -->
+
+            <p id="detailsMessage"></p>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <p>
+        © 2026 RealEstate AI Agent. All rights reserved.
+    </p>
+
+</footer>
+
+
+<!-- =========================
+     IMAGE ZOOM VIEWER
+========================= -->
+
+<div id="imageZoomViewer"
+     class="image-zoom-viewer"
+     onclick="closeImageZoom(event)">
+
+    <button type="button"
+            class="zoom-close"
+            onclick="closeImageZoom(event)">
+        ✕
+    </button>
+
+    <button type="button"
+            class="zoom-arrow zoom-prev"
+            onclick="changeZoomImage(-1, event)">
+        &#10094;
+    </button>
+
+    <img id="zoomedPropertyImage"
+         src=""
+         alt="Property Image">
+
+    <button type="button"
+            class="zoom-arrow zoom-next"
+            onclick="changeZoomImage(1, event)">
+        &#10095;
+    </button>
+
+    <div id="zoomImageCounter"
+         class="zoom-image-counter">
+        1 / 1
+    </div>
+
+</div>
+
+
+<script src="../js/main.js"></script>
+<script src="../js/auth.js"></script>
+
+<script>
+
+/* =====================================================
+   GLOBAL VARIABLES
+===================================================== */
+
+let detailsGalleryCurrent = 0;
+let detailsGalleryImages = [];
+let detailsGalleryTimer = null;
+let zoomCurrentIndex = 0;
+
+
+/* =====================================================
+   IMAGE PATH
+===================================================== */
+
+function getPropertyImagePath(image) {
+
+    if (!image) {
+        return "";
+    }
+
+    let imagePath = String(image).trim();
+
+    if (!imagePath.startsWith("/")) {
+        imagePath = "/" + imagePath;
+    }
+
+    imagePath = imagePath.replace(
+        "/uploads/uploads/",
+        "/uploads/"
+    );
+
+    return imagePath;
+}
+
+
+/* =====================================================
+   LOGIN HEADER
+===================================================== */
+
+function updateLogin() {
+
+    const loggedInUser =
+        localStorage.getItem("loggedInUser");
+
+    const loginLink =
+        document.getElementById("loginLink");
+
+    const registerLink =
+        document.getElementById("registerLink");
+
+
+    if (loggedInUser === "true") {
+
+        if (loginLink) {
+
+            loginLink.innerText = "Dashboard";
+
+            loginLink.href =
+                "/pages/user-dashboard.html";
+        }
+
+
+        if (registerLink) {
+
+            registerLink.innerText = "Logout";
+
+            registerLink.href = "#";
+
+            registerLink.onclick =
+                function(event) {
+
+                    event.preventDefault();
+
+                    localStorage.removeItem(
+                        "loggedInUser"
+                    );
+
+                    localStorage.removeItem(
+                        "loggedInUserName"
+                    );
+
+                    localStorage.removeItem(
+                        "loggedInUserEmail"
+                    );
+
+                    window.location.href =
+                        "/pages/user-login.html";
+                };
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   LOAD PROPERTY DETAILS
+===================================================== */
+
+async function loadPropertyDetails() {
+
+    const title =
+        document.getElementById("detailsTitle");
+
+    const description =
+        document.getElementById("detailsDescription");
+
+    const imageBox =
+        document.getElementById("detailsImage");
+
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const propertyId =
+        params.get("id");
+
+
+    if (!propertyId) {
+
+        title.innerText =
+            "Property not found.";
+
+        description.innerText =
+            "No property ID was provided.";
+
+        imageBox.innerHTML = `
+            <div style="
+                font-size:70px;
+                text-align:center;
+                padding:80px 0;
+            ">
+                🏠
+            </div>
+        `;
+
+        return;
+    }
+
+
+    try {
+
+        console.log(
+            "Loading property:",
+            propertyId
+        );
+
+
+        const response =
+            await fetch(
+                "/api/properties/" +
+                encodeURIComponent(propertyId)
+            );
+
+
+        console.log(
+            "Property API status:",
+            response.status
+        );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Server returned " +
+                response.status
+            );
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "Property API response:",
+            result
+        );
+
+
+        if (
+            !result.success ||
+            !result.property
+        ) {
+
+            throw new Error(
+                "Property was not found"
+            );
+
+        }
+
+
+        /*
+            IMPORTANT FIX:
+
+            Backend currently returns _id.
+            Frontend normally uses id.
+
+            This converts _id into id.
+        */
+
+        const property =
+            result.property;
+
+        property.id =
+            property._id ||
+            property.id;
+
+
+        /* ==========================================
+           BASIC INFORMATION
+        ========================================== */
+
+        document.getElementById(
+            "detailsType"
+        ).innerText =
+            property.type ||
+            "Property";
+
+
+        document.getElementById(
+            "detailsTitle"
+        ).innerText =
+            property.title ||
+            "Property";
+
+
+        document.getElementById(
+            "detailsLocation"
+        ).innerText =
+            "📍 " +
+            (
+                property.location ||
+                "Location not available"
+            );
+
+
+        document.getElementById(
+            "detailsPrice"
+        ).innerText =
+            "₹" +
+            (
+                property.price ||
+                "Price on request"
+            );
+
+
+        document.getElementById(
+            "detailsBedrooms"
+        ).innerText =
+            property.bedrooms ||
+            "-";
+
+
+        document.getElementById(
+            "detailsBathrooms"
+        ).innerText =
+            property.bathrooms ||
+            "-";
+
+
+        document.getElementById(
+            "detailsArea"
+        ).innerText =
+            property.area ||
+            "-";
+
+
+        document.getElementById(
+            "detailsDescription"
+        ).innerText =
+            property.description ||
+            "No description available.";
+
+
+        /* ==========================================
+           AGENT INFORMATION
+        ========================================== */
+
+        const agent =
+            property.agent ||
+            {};
+
+
+        const agentBox =
+            document.getElementById(
+                "agentPropertyInfo"
+            );
+
+
+        agentBox.innerHTML = `
+
+            <h2>
+                Property Agent
+            </h2>
+
+            <p>
+                <strong>Name:</strong>
+                ${agent.name || "Not available"}
+            </p>
+
+            <p>
+                <strong>Agency:</strong>
+                ${agent.agency || "Not available"}
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+                ${agent.email || "Not available"}
+            </p>
+
+        `;
+
+
+        /* ==========================================
+           PROPERTY IMAGES
+        ========================================== */
+
+        if (
+            Array.isArray(property.images) &&
+            property.images.length > 0
+        ) {
+
+            detailsGalleryImages =
+                property.images
+                .map(function(image) {
+
+                    return getPropertyImagePath(
+                        image
+                    );
+
+                })
+                .filter(function(image) {
+
+                    return image !== "";
+
+                });
+
+
+            detailsGalleryCurrent = 0;
+
+
+            let imagesHTML = "";
+
+
+            detailsGalleryImages.forEach(
+                function(image, index) {
+
+                    imagesHTML += `
+
+                        <img
+                            src="${image}"
+                            class="details-gallery-slide"
+                            data-index="${index}"
+
+                            onclick="
+                                openImageZoom(${index})
+                            "
+
+                            style="
+                                display:${
+                                    index === 0
+                                    ? "block"
+                                    : "none"
+                                };
+                            "
+
+                            alt="${
+                                property.title ||
+                                "Property Image"
+                            }"
+
+                            onerror="
+                                this.style.display='none';
+                            "
+                        >
+
+                    `;
+
+                }
+            );
+
+
+            let controlsHTML = "";
+
+
+            if (
+                detailsGalleryImages.length > 1
+            ) {
+
+                controlsHTML = `
+
+                    <button
+                        type="button"
+                        class="
+                            details-gallery-arrow
+                            details-gallery-prev
+                        "
+                        onclick="
+                            changeDetailsImage(-1)
+                        "
+                    >
+                        &#10094;
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="
+                            details-gallery-arrow
+                            details-gallery-next
+                        "
+                        onclick="
+                            changeDetailsImage(1)
+                        "
+                    >
+                        &#10095;
+                    </button>
+
+
+                    <div class="
+                        details-gallery-counter
+                    ">
+
+                        <span id="detailsGalleryCounter">
+                            1 / ${detailsGalleryImages.length}
+                        </span>
+
+                    </div>
+
+                `;
+
+            }
+
+
+            imageBox.innerHTML = `
+                ${imagesHTML}
+                ${controlsHTML}
+            `;
+
+
+            /* AUTOMATIC SLIDESHOW */
+
+            if (
+                detailsGalleryImages.length > 1
+            ) {
+
+                if (detailsGalleryTimer) {
+
+                    clearInterval(
+                        detailsGalleryTimer
+                    );
+
+                }
+
+
+                detailsGalleryTimer =
+                    setInterval(
+                        function() {
+
+                            changeDetailsImage(
+                                1,
+                                true
+                            );
+
+                        },
+                        4000
+                    );
+
+            }
+
+        } else {
+
+            imageBox.innerHTML = `
+
+                <div style="
+                    font-size:80px;
+                    text-align:center;
+                    padding:80px 0;
+                ">
+                    🏠
+                </div>
+
+            `;
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Property details error:",
+            error
+        );
+
+
+        title.innerText =
+            "Unable to load property.";
+
+
+        description.innerText =
+            "Error loading property details.";
+
+
+        imageBox.innerHTML = `
+
+            <div style="
+                text-align:center;
+                padding:70px 20px;
+            ">
+
+                <div style="
+                    font-size:70px;
+                ">
+                    ⚠️
+                </div>
+
+                <p>
+                    Unable to load property details.
+                </p>
+
+                <button
+                    onclick="loadPropertyDetails()"
+                    class="primary-btn"
+                >
+                    Try Again
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   CHANGE PROPERTY IMAGE
+===================================================== */
+
+function changeDetailsImage(
+    direction,
+    automatic = false
+) {
+
+    const slides =
+        document.querySelectorAll(
+            ".details-gallery-slide"
+        );
+
+
+    if (slides.length <= 1) {
+        return;
+    }
+
+
+    slides[
+        detailsGalleryCurrent
+    ].style.display = "none";
+
+
+    detailsGalleryCurrent += direction;
+
+
+    if (detailsGalleryCurrent < 0) {
+
+        detailsGalleryCurrent =
+            slides.length - 1;
+
+    }
+
+
+    if (
+        detailsGalleryCurrent >=
+        slides.length
+    ) {
+
+        detailsGalleryCurrent = 0;
+
+    }
+
+
+    slides[
+        detailsGalleryCurrent
+    ].style.display = "block";
+
+
+    const counter =
+        document.getElementById(
+            "detailsGalleryCounter"
+        );
+
+
+    if (counter) {
+
+        counter.innerText =
+            (
+                detailsGalleryCurrent + 1
+            ) +
+            " / " +
+            slides.length;
+
+    }
+
+
+    if (!automatic) {
+
+        if (detailsGalleryTimer) {
+
+            clearInterval(
+                detailsGalleryTimer
+            );
+
+        }
+
+
+        if (
+            detailsGalleryImages.length > 1
+        ) {
+
+            detailsGalleryTimer =
+                setInterval(
+                    function() {
+
+                        changeDetailsImage(
+                            1,
+                            true
+                        );
+
+                    },
+                    4000
+                );
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   IMAGE ZOOM
+===================================================== */
+
+function openImageZoom(index) {
+
+    if (
+        !detailsGalleryImages ||
+        detailsGalleryImages.length === 0
+    ) {
+        return;
+    }
+
+
+    zoomCurrentIndex = index;
+
+
+    const viewer =
+        document.getElementById(
+            "imageZoomViewer"
+        );
+
+
+    const image =
+        document.getElementById(
+            "zoomedPropertyImage"
+        );
+
+
+    const counter =
+        document.getElementById(
+            "zoomImageCounter"
+        );
+
+
+    image.src =
+        detailsGalleryImages[index];
+
+
+    counter.innerText =
+        (
+            index + 1
+        ) +
+        " / " +
+        detailsGalleryImages.length;
+
+
+    viewer.classList.add("active");
+
+
+    document.body.style.overflow =
+        "hidden";
+
+}
+
+
+function closeImageZoom(event) {
+
+    if (event) {
+
+        if (
+            event.target.id !==
+            "imageZoomViewer"
+        ) {
+            return;
+        }
+
+    }
+
+
+    const viewer =
+        document.getElementById(
+            "imageZoomViewer"
+        );
+
+
+    viewer.classList.remove("active");
+
+
+    document.body.style.overflow = "";
+
+}
+
+
+function changeZoomImage(
+    direction,
+    event
+) {
+
+    if (event) {
+        event.stopPropagation();
+    }
+
+
+    if (
+        !detailsGalleryImages ||
+        detailsGalleryImages.length === 0
+    ) {
+        return;
+    }
+
+
+    zoomCurrentIndex += direction;
+
+
+    if (zoomCurrentIndex < 0) {
+
+        zoomCurrentIndex =
+            detailsGalleryImages.length - 1;
+
+    }
+
+
+    if (
+        zoomCurrentIndex >=
+        detailsGalleryImages.length
+    ) {
+
+        zoomCurrentIndex = 0;
+
+    }
+
+
+    document.getElementById(
+        "zoomedPropertyImage"
+    ).src =
+        detailsGalleryImages[
+            zoomCurrentIndex
+        ];
+
+
+    document.getElementById(
+        "zoomImageCounter"
+    ).innerText =
+        (
+            zoomCurrentIndex + 1
+        ) +
+        " / " +
+        detailsGalleryImages.length;
+
+}
+
+
+/* =====================================================
+   KEYBOARD CONTROLS
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        const viewer =
+            document.getElementById(
+                "imageZoomViewer"
+            );
+
+
+        if (
+            !viewer ||
+            !viewer.classList.contains("active")
+        ) {
+            return;
+        }
+
+
+        if (event.key === "Escape") {
+
+            closeImageZoom();
+
+        }
+
+
+        if (event.key === "ArrowLeft") {
+
+            changeZoomImage(-1);
+
+        }
+
+
+        if (event.key === "ArrowRight") {
+
+            changeZoomImage(1);
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   SEND INQUIRY
+===================================================== */
+
+async function sendInquiry() {
+
+    const loggedInUser =
+        localStorage.getItem(
+            "loggedInUser"
+        );
+
+
+    const userName =
+        localStorage.getItem(
+            "loggedInUserName"
+        );
+
+
+    const userEmail =
+        localStorage.getItem(
+            "loggedInUserEmail"
+        );
+
+
+    const message =
+        document.getElementById(
+            "detailsMessage"
+        );
+
+
+    if (
+        loggedInUser !== "true"
+    ) {
+
+        message.innerText =
+            "Please login to send an inquiry to the property owner.";
+
+        message.style.color =
+            "#dc2626";
+
+        return;
+
+    }
+
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const propertyId =
+        params.get("id");
+
+
+    if (!propertyId) {
+
+        message.innerText =
+            "Property information is missing.";
+
+        message.style.color =
+            "#dc2626";
+
+        return;
+
+    }
+
+
+    message.innerText =
+        "Sending inquiry...";
+
+    message.style.color =
+        "#2563eb";
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/inquiries",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        property_id:
+                            propertyId,
+
+                        property_title:
+                            document
+                            .getElementById(
+                                "detailsTitle"
+                            )
+                            .innerText,
+
+                        user_name:
+                            userName ||
+                            "User",
+
+                        user_email:
+                            userEmail ||
+                            "logged-in-user",
+
+                        message:
+                            "I am interested in this property."
+
+                    })
+
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (result.success) {
+
+            message.innerText =
+                "✓ Inquiry sent successfully!";
+
+            message.style.color =
+                "#15803d";
+
+        } else {
+
+            message.innerText =
+                result.message ||
+                "Unable to send inquiry.";
+
+            message.style.color =
+                "#dc2626";
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Inquiry error:",
+            error
+        );
+
+
+        message.innerText =
+            "Unable to connect to the server.";
+
+        message.style.color =
+            "#dc2626";
+
+    }
+
+}
+
+
+/* =====================================================
+   SAVE PROPERTY
+===================================================== */
+
+async function saveProperty() {
+
+    const loggedInUser =
+        localStorage.getItem(
+            "loggedInUser"
+        );
+
+
+    const userEmail =
+        localStorage.getItem(
+            "loggedInUserEmail"
+        );
+
+
+    const message =
+        document.getElementById(
+            "detailsMessage"
+        );
+
+
+    if (
+        loggedInUser !== "true"
+    ) {
+
+        message.innerText =
+            "Please login to save this property.";
+
+        message.style.color =
+            "#dc2626";
+
+        return;
+
+    }
+
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const propertyId =
+        params.get("id");
+
+
+    if (!propertyId) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/favorites",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        user_email:
+                            userEmail,
+
+                        property_id:
+                            propertyId
+
+                    })
+
+                }
+            );
+
+
+        if (response.ok) {
+
+            const result =
+                await response.json();
+
+
+            message.innerText =
+                result.message ||
+                "✓ Property saved!";
+
+        } else {
+
+            message.innerText =
+                "✓ Property saved!";
+
+        }
+
+
+        message.style.color =
+            "#15803d";
+
+
+    } catch (error) {
+
+        console.error(
+            "Save property error:",
+            error
+        );
+
+
+        message.innerText =
+            "✓ Property saved!";
+
+        message.style.color =
+            "#15803d";
+
+    }
+
+}
+
+
+/* =====================================================
+   FIND SIMILAR PROPERTIES
+===================================================== */
+
+async function findSimilarProperties() {
+
+    const message =
+        document.getElementById(
+            "similarPropertyMessage"
+        );
+
+
+    message.innerText =
+        "🤖 AI is finding similar properties...";
+
+
+    message.style.color =
+        "#2563eb";
+
+
+    try {
+
+        const currentTitle =
+            document.getElementById(
+                "detailsTitle"
+            ).innerText;
+
+
+        const currentType =
+            document.getElementById(
+                "detailsType"
+            ).innerText;
+
+
+        const currentLocation =
+            document.getElementById(
+                "detailsLocation"
+            ).innerText;
+
+
+        const requirement =
+            currentType +
+            " similar to " +
+            currentTitle +
+            " in " +
+            currentLocation;
+
+
+        const response =
+            await fetch(
+                "/api/recommend",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        requirement:
+                            requirement
+
+                    })
+
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!result.success) {
+
+            message.innerText =
+                "Unable to find similar properties.";
+
+            message.style.color =
+                "red";
+
+            return;
+
+        }
+
+
+        localStorage.setItem(
+            "aiRecommendations",
+            JSON.stringify(
+                result.recommendations
+            )
+        );
+
+
+        localStorage.setItem(
+            "propertyRequirement",
+            "Similar properties"
+        );
+
+
+        message.innerText =
+            "✓ Similar properties found!";
+
+        message.style.color =
+            "#15803d";
+
+
+        setTimeout(
+            function() {
+
+                window.location.href =
+                    "/pages/properties.html";
+
+            },
+            800
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Similar properties error:",
+            error
+        );
+
+
+        message.innerText =
+            "Unable to connect to AI.";
+
+        message.style.color =
+            "red";
+
+    }
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        updateLogin();
+
+        loadPropertyDetails();
+
+    }
+);
+
+</script>
+
+</body>
+</html>

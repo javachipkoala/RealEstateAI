@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Login - Real Estate AI</title>
+
+<link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+<body>
+
+    <header class="main-navbar">
+
+    <a href="/" class="home-logo">
+        🏠 RealEstateAI
+    </a>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/pages/properties.html">Properties</a>
+        <a href="/#howItWorks">How It Works</a>
+        <a href="/#about">About</a>
+    </nav>
+
+    <div class="nav-buttons">
+        <a href="/pages/user-login.html" class="nav-login">
+            User Login
+        </a>
+
+        <a href="/pages/agent-login.html" class="nav-register">
+            Agent Login
+        </a>
+    </div>
+
+</header>
+
+<div class="auth-container">
+
+    <div class="auth-box">
+
+        <h1>🔐 Admin Login</h1>
+
+        <p>Login to the Admin Dashboard</p>
+
+        <form id="adminLoginForm">
+
+            <div class="form-group">
+
+                <label>Admin Username</label>
+
+                <input
+                    type="text"
+                    id="adminUsername"
+                    placeholder="Enter admin username"
+                    required
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    id="adminPassword"
+                    placeholder="Enter admin password"
+                    required
+                >
+
+            </div>
+
+            <button
+                type="submit"
+                class="primary-btn"
+                style="width:100%;">
+
+                Login as Admin
+
+            </button>
+
+            <p id="adminLoginMessage"></p>
+
+        </form>
+
+        <br>
+
+        <a href="../index.html">
+            ← Back to Home
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    document
+        .getElementById("adminLoginForm")
+        .addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            const username =
+                document
+                .getElementById("adminUsername")
+                .value
+                .trim();
+
+            const password =
+                document
+                .getElementById("adminPassword")
+                .value;
+
+            const message =
+                document
+                .getElementById("adminLoginMessage");
+
+
+            // Fixed admin credentials
+
+            if (
+                username === "admin" &&
+                password === "Admin@123"
+            ) {
+
+                localStorage.setItem(
+                    "adminLoggedIn",
+                    "true"
+                );
+
+                localStorage.setItem(
+                    "adminUsername",
+                    username
+                );
+
+                message.innerText =
+                    "✓ Login successful!";
+
+                message.style.color =
+                    "#15803d";
+
+
+                setTimeout(function() {
+
+                    window.location.href =
+                        "admin-dashboard.html";
+
+                }, 500);
+
+            } else {
+
+                message.innerText =
+                    "❌ Invalid admin username or password.";
+
+                message.style.color =
+                    "#dc2626";
+
+            }
+
+        });
+
+</script>
+```
+
+</body>
+
+</html>

@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>User Dashboard - RealEstateAI</title>
+
+    <link rel="stylesheet"
+          href="../css/style.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- Header -->
+
+    <header class="main-navbar">
+
+    <a href="/" class="home-logo">
+        🏠 RealEstateAI
+    </a>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/pages/properties.html">Properties</a>
+        <a href="/#howItWorks">How It Works</a>
+        <a href="/#about">About</a>
+    </nav>
+
+    <div class="nav-buttons">
+        <a href="/pages/user-dashboard.html" class="nav-login">
+            Dashboard
+        </a>
+
+        <a href="/pages/user-login.html" class="nav-register">
+            Logout
+        </a>
+    </div>
+
+</header>
+
+
+    <!-- Dashboard -->
+
+    <div class="dashboard-container">
+
+
+        <!-- Sidebar -->
+
+        <aside class="dashboard-sidebar">
+
+            <a href="#" class="active">
+                📊 Dashboard
+            </a>
+
+            <a href="#searchProperties">
+                🔍 Search Properties
+            </a>
+
+            <a href="#savedProperties">
+                ❤️ Saved Properties
+            </a>
+
+            <a href="#myInquiries">
+                📩 My Inquiries
+            </a>
+
+            <a href="#notifications">
+                🔔 Notifications
+            </a>
+
+            <a href="#profile">
+                👤 My Profile
+            </a>
+
+        </aside>
+
+
+
+        <!-- Main Content -->
+
+        <main class="dashboard-main">
+
+
+            <h1>
+                User Dashboard
+            </h1>
+
+
+            <p class="dashboard-welcome">
+                Welcome back!
+            </p>
+            <div class="ai-search-box">
+
+    <h2>🤖 AI Property Recommendation</h2>
+
+    <p>
+        Tell AI what kind of property you are looking for.
+    </p>
+
+    <div class="ai-search-row">
+
+        <input
+            type="text"
+            id="dashboardAIRequirement"
+            placeholder="Example: 2 BHK in Kolhapur under 50 lakh"
+        >
+
+        <button
+            class="primary-btn"
+            onclick="dashboardAIRecommendation()">
+
+            Find Properties
+
+        </button>
+
+    </div>
+
+    <p id="dashboardAIMessage"></p>
+
+</div>
+
+
+
+            <!-- Statistics -->
+
+            <section class="stats-grid">
+
+
+                <div class="stat-card">
+
+                    <h3>
+                        Saved Properties
+                    </h3>
+
+                    <p id="savedCount">
+                        3
+                    </p>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <h3>
+                        My Inquiries
+                    </h3>
+
+                    <p>
+                        4
+                    </p>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <h3>
+                        Recommendations
+                    </h3>
+
+                    <p>
+                        6
+                    </p>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <h3>
+                        Notifications
+                    </h3>
+
+                    <p>
+                        2
+                    </p>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- AI Recommendations -->
+
+            <section class="dashboard-section">
+
+
+                <h2>
+                    🤖 AI Property Recommendations
+                </h2>
+
+
+                <p>
+                    Tell us what type of property you are
+                    looking for and our AI will find suitable
+                    properties.
+                </p>
+
+
+                <textarea
+                    id="userRequirement"
+                    rows="4"
+                    placeholder="Example: I need a 2 BHK apartment in Kolhapur under ₹50 lakh">
+                </textarea>
+
+
+                <br><br>
+
+
+                <button
+                    class="primary-btn"
+                    onclick="getUserRecommendations()">
+
+                    Find My Properties
+
+                </button>
+
+
+                <p id="recommendationMessage"></p>
+
+
+            </section>
+
+
+
+            <!-- Search -->
+
+            <section
+                class="dashboard-section"
+                id="searchProperties">
+
+
+                <div class="section-header">
+
+                    <h2>
+                        🔍 Search Properties
+                    </h2>
+
+
+                    <a
+                        href="properties.html"
+                        class="dashboard-action">
+
+                        View All Properties
+
+                    </a>
+
+                </div>
+
+
+                <div class="property-table">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Property
+                                </th>
+
+                                <th>
+                                    Location
+                                </th>
+
+                                <th>
+                                    Price
+                                </th>
+
+                                <th>
+                                    Type
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+
+                            <tr>
+
+                                <td>
+                                    Modern 2 BHK Apartment
+                                </td>
+
+                                <td>
+                                    Kolhapur
+                                </td>
+
+                                <td>
+                                    ₹45 Lakh
+                                </td>
+
+                                <td>
+                                    Apartment
+                                </td>
+
+                                <td>
+
+                                    <button
+                                        onclick="saveUserProperty(this)">
+
+                                        ❤️ Save
+
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+
+
+                            <tr>
+
+                                <td>
+                                    3 BHK Villa
+                                </td>
+
+                                <td>
+                                    Pune
+                                </td>
+
+                                <td>
+                                    ₹85 Lakh
+                                </td>
+
+                                <td>
+                                    Villa
+                                </td>
+
+                                <td>
+
+                                    <button
+                                        onclick="saveUserProperty(this)">
+
+                                        ❤️ Save
+
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+
+
+                            <tr>
+
+                                <td>
+                                    Family House
+                                </td>
+
+                                <td>
+                                    Sangli
+                                </td>
+
+                                <td>
+                                    ₹32 Lakh
+                                </td>
+
+                                <td>
+                                    House
+                                </td>
+
+                                <td>
+
+                                    <button
+                                        onclick="saveUserProperty(this)">
+
+                                        ❤️ Save
+
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- Saved Properties -->
+
+            <section
+                class="dashboard-section"
+                id="savedProperties">
+
+
+                <h2>
+                    ❤️ Saved Properties
+                </h2>
+
+
+                <div
+                    id="savedPropertyList"
+                    class="inquiry-list">
+
+
+                    <div class="inquiry-item">
+
+                        <div>
+
+                            <h3>
+                                Modern 2 BHK Apartment
+                            </h3>
+
+                            <p>
+                                Kolhapur · ₹45 Lakh
+                            </p>
+
+                        </div>
+
+
+                        <span class="status-active">
+                            Saved
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- Inquiries -->
+
+            <section
+                class="dashboard-section"
+                id="myInquiries">
+
+
+                <h2>
+                    📩 My Inquiries
+                </h2>
+
+
+                <div class="inquiry-list">
+
+
+                    <div class="inquiry-item">
+
+                        <div>
+
+                            <h3>
+                                Modern 2 BHK Apartment
+                            </h3>
+
+                            <p>
+                                Inquiry sent to property agent
+                            </p>
+
+                        </div>
+
+
+                        <span class="status-pending">
+                            Pending
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="inquiry-item">
+
+                        <div>
+
+                            <h3>
+                                Family House
+                            </h3>
+
+                            <p>
+                                Agent has replied to your inquiry
+                            </p>
+
+                        </div>
+
+
+                        <span class="status-active">
+                            Replied
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- Notifications -->
+
+            <section
+                class="dashboard-section"
+                id="notifications">
+
+
+                <h2>
+                    🔔 Notifications
+                </h2>
+
+
+                <div class="inquiry-list" id="userInquiryList">
+
+
+                    <div class="inquiry-item">
+
+                        <div>
+
+                            <h3>
+                                New Property Recommendation
+                            </h3>
+
+                            <p>
+                                A new property matching your
+                                requirements is available.
+                            </p>
+
+                        </div>
+
+                        <span class="status-new">
+                            New
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="inquiry-item">
+
+                        <div>
+
+                            <h3>
+                                Agent Replied
+                            </h3>
+
+                            <p>
+                                An agent has replied to your inquiry.
+                            </p>
+
+                        </div>
+
+                        <span class="status-active">
+                            Read
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- Profile -->
+
+            <section
+                class="dashboard-section"
+                id="profile">
+
+
+                <h2>
+                    👤 My Profile
+                </h2>
+
+
+                <div class="profile-box">
+
+
+                    <p>
+
+                        <strong>
+                            Name:
+                        </strong>
+
+                        <span id="loggedInUserName">User</span>
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Email:
+                        </strong>
+
+                        mayuresh@example.com
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Phone:
+                        </strong>
+
+                        +91 XXXXX XXXXX
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Account Type:
+                        </strong>
+
+                        Regular User
+
+                    </p>
+
+
+                </div>
+
+
+            </section>
+
+
+        </main>
+
+
+    </div>
+
+
+
+<script>
+const userName = localStorage.getItem("loggedInUserName");
+
+if (userName) {
+    document.getElementById("loggedInUserName").innerText = userName;
+}
+</script>
+<script>
+
+async function loadUserInquiries() {
+
+    const inquiryList =
+        document.getElementById("userInquiryList");
+
+    if (!inquiryList) return;
+
+    try {
+
+        const response =
+            await fetch("/api/inquiries");
+
+        const result =
+            await response.json();
+
+        if (!result.success ||
+            result.inquiries.length === 0) {
+
+            inquiryList.innerHTML = `
+                <div class="inquiry-item">
+                    <p>You have not sent any inquiries yet.</p>
+                </div>
+            `;
+
+            return;
+        }
+
+        inquiryList.innerHTML = "";
+
+        result.inquiries.forEach(function(inquiry) {
+
+            const item =
+                document.createElement("div");
+
+            item.className = "inquiry-item";
+
+            let replySection = "";
+
+            if (inquiry.reply &&
+                inquiry.reply.trim() !== "") {
+
+                replySection = `
+                    <div class="agent-reply">
+                        <strong>Agent Reply:</strong>
+                        <p>${inquiry.reply}</p>
+                    </div>
+                `;
+
+            } else {
+
+                replySection = `
+                    <p class="inquiry-waiting">
+                        Waiting for agent response...
+                    </p>
+                `;
+            }
+
+            item.innerHTML = `
+                <div>
+
+                    <h3>
+                        ${inquiry.property_title}
+                    </h3>
+
+                    <p>
+                        Message: ${inquiry.message}
+                    </p>
+
+                    ${replySection}
+
+                </div>
+
+                <span class="${
+                    inquiry.status === "Replied"
+                    ? "status-active"
+                    : "status-pending"
+                }">
+
+                    ${inquiry.status}
+
+                </span>
+            `;
+
+            inquiryList.appendChild(item);
+
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        inquiryList.innerHTML = `
+            <div class="inquiry-item">
+                <p>Unable to load inquiries.</p>
+            </div>
+        `;
+    }
+}
+
+
+loadUserInquiries();
+
+</script>
+<script>
+
+async function dashboardAIRecommendation() {
+
+    const requirement =
+        document
+        .getElementById("dashboardAIRequirement")
+        .value
+        .trim();
+
+    const message =
+        document.getElementById("dashboardAIMessage");
+
+    if (requirement === "") {
+
+        message.innerText =
+            "Please describe the property you are looking for.";
+
+        message.style.color = "red";
+
+        return;
+    }
+
+    message.innerText =
+        "🤖 AI is finding suitable properties...";
+
+    message.style.color = "#2563eb";
+
+    try {
+
+        const response =
+            await fetch("/api/recommend", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    requirement: requirement
+                })
+            });
+
+        const result =
+            await response.json();
+
+        if (!result.success) {
+
+            message.innerText =
+                result.message;
+
+            message.style.color = "red";
+
+            return;
+        }
+
+        localStorage.setItem(
+            "aiRecommendations",
+            JSON.stringify(result.recommendations)
+        );
+
+        localStorage.setItem(
+            "propertyRequirement",
+            requirement
+        );
+
+        if (result.recommendations.length === 0) {
+
+            message.innerText =
+                "No matching properties found.";
+
+            message.style.color = "#dc2626";
+
+            return;
+        }
+
+        message.innerText =
+            "✓ AI found " +
+            result.recommendations.length +
+            " suitable properties!";
+
+        message.style.color = "#15803d";
+
+        setTimeout(function() {
+
+            window.location.href =
+                "properties.html";
+
+        }, 800);
+
+    } catch (error) {
+
+        console.error(error);
+
+        message.innerText =
+            "Unable to connect to AI.";
+
+        message.style.color = "red";
+    }
+}
+
+</script>
+<script>
+
+function userLogout() {
+
+    // Remove user login information
+
+    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("loggedInUserName");
+
+    // Remove AI search information
+
+    localStorage.removeItem("aiRecommendations");
+    localStorage.removeItem("propertyRequirement");
+
+    // Go back to user login
+
+    window.location.href =
+        "user-login.html";
+}
+
+</script>
+
+</body>
+
+</html>

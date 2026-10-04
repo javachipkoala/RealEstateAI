@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>User Login - RealEstate AI</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+<body>
+
+    <header class="main-navbar">
+
+    <a href="/" class="home-logo">
+        🏠 RealEstateAI
+    </a>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/pages/properties.html">Properties</a>
+        <a href="/#howItWorks">How It Works</a>
+        <a href="/#about">About</a>
+    </nav>
+
+    <div class="nav-buttons">
+        <a href="/pages/user-login.html" class="nav-login">
+            Login
+        </a>
+
+        <a href="/pages/user-register.html" class="nav-register">
+            Register
+        </a>
+    </div>
+
+</header>
+
+    <!-- Login -->
+
+    <main class="auth-page">
+
+        <div class="auth-box">
+
+            <div class="auth-header">
+
+                <div class="auth-icon">
+                    👤
+                </div>
+
+                <h1>User Login</h1>
+
+                <p>
+                    Login to find your perfect property.
+                </p>
+
+            </div>
+
+
+            <form id="userLoginForm">
+
+    <div class="form-group">
+
+        <label>
+            Email
+        </label>
+
+        <input
+            type="email"
+            id="userLoginEmail"
+            placeholder="Enter your email"
+            required>
+
+    </div>
+
+
+    <div class="form-group">
+
+        <label>
+            Password
+        </label>
+
+        <input
+            type="password"
+            id="userLoginPassword"
+            placeholder="Enter your password"
+            required>
+
+    </div>
+
+
+    <button
+        type="submit"
+        class="primary-btn">
+
+        Login
+
+    </button>
+
+
+    <p id="userLoginMessage"></p>
+
+</form>
+
+
+            <p id="userLoginMessage"></p>
+
+
+            <div class="auth-footer">
+
+                <p>
+                    Don't have an account?
+                    <a href="user-register.html">
+                        Create Account
+                    </a>
+                </p>
+
+                <p>
+                    Are you a property agent?
+                    <a href="agent-login.html">
+                        Agent Login
+                    </a>
+                </p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            © 2026 RealEstate AI Agent. All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <script>
+document.getElementById("userLoginForm").addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const email =
+        document.getElementById("userLoginEmail").value.trim();
+
+    const password =
+        document.getElementById("userLoginPassword").value;
+
+    const message =
+        document.getElementById("userLoginMessage");
+
+    message.innerText = "Checking your account...";
+    message.style.color = "#2563eb";
+
+    try {
+
+        const response = await fetch("/api/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+
+            message.innerText = "✓ Login successful!";
+            message.style.color = "green";
+
+            localStorage.setItem("loggedInUser", "true");
+            localStorage.setItem("loggedInUserName", result.user.name);
+
+            setTimeout(function() {
+                window.location.href = "user-dashboard.html";
+            }, 800);
+
+        } else {
+
+            message.innerText = result.message;
+            message.style.color = "red";
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        message.innerText =
+            "Unable to connect to the server.";
+
+        message.style.color = "red";
+    }
+
+});
+</script>
+
+</body>
+
+</html>

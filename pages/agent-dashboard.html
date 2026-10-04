@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Agent Dashboard - RealEstateAI</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+    <!-- Dashboard Header -->
+    <header class="main-navbar">
+
+    <a href="/" class="home-logo">
+        🏠 RealEstateAI
+    </a>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/pages/properties.html">Properties</a>
+        <a href="/#howItWorks">How It Works</a>
+        <a href="/#about">About</a>
+    </nav>
+
+    <div class="nav-buttons">
+        <a href="/pages/agent-dashboard.html" class="nav-login">
+            Dashboard
+        </a>
+
+        <a href="/pages/agent-login.html" class="nav-register">
+            Logout
+        </a>
+    </div>
+
+</header>
+
+    <!-- Dashboard Layout -->
+    <div class="dashboard-container">
+
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+
+            <a href="#" class="active">📊 Dashboard</a>
+
+            <a href="#">🏠 My Properties</a>
+
+            <a href="#addProperty">➕ Add Property</a>
+
+            <a href="#inquiries">📩 Inquiries</a>
+
+            <a href="#messages">💬 Messages</a>
+
+            <a href="#profile">👤 My Profile</a>
+
+        </aside>
+
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+
+            <h1>Agent Dashboard</h1>
+
+            <p class="dashboard-welcome">
+                Welcome back, Property Agent.
+            </p>
+
+
+            <!-- Statistics -->
+            <section class="stats-grid">
+
+                <div class="stat-card">
+                    <h3>My Properties</h3>
+                    <p>8</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Active Properties</h3>
+                    <p>6</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Inquiries</h3>
+                    <p>24</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Pending Replies</h3>
+                    <p>5</p>
+                </div>
+
+            </section>
+
+
+            <!-- My Properties -->
+            <section class="dashboard-section">
+
+                <div class="section-header">
+
+                    <h2>My Properties</h2>
+
+                    <a href="#addProperty" class="dashboard-action">
+                        + Add Property
+                    </a>
+
+                </div>
+
+
+                <div class="property-table">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Property</th>
+                                <th>Location</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="myPropertiesTable">
+
+                            <tr>
+                                <td>2 BHK Apartment</td>
+                                <td>Kolhapur</td>
+                                <td>₹45 Lakh</td>
+                                <td>
+                                    <span class="status-active">
+                                        Active
+                                    </span>
+                                </td>
+                                <td>
+                                    <button onclick="editProperty(this)">
+                                        Edit
+                                    </button>
+
+                                    <button onclick="deleteProperty(this)">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td>3 BHK Villa</td>
+                                <td>Pune</td>
+                                <td>₹85 Lakh</td>
+                                <td>
+                                    <span class="status-active">
+                                        Active
+                                    </span>
+                                </td>
+                                <td>
+                                    <button onclick="editProperty(this)">
+                                        Edit
+                                    </button>
+
+                                    <button onclick="deleteProperty(this)">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td>Family House</td>
+                                <td>Sangli</td>
+                                <td>₹32 Lakh</td>
+                                <td>
+                                   <span class="status-pending">
+    ${inquiry.status}
+</span>
+
+<button
+    class="primary-btn"
+    onclick="replyToInquiry('${inquiry._id}')">
+    Reply
+</button>
+
+<button
+    class="primary-btn"
+    onclick="replyToInquiry('${inquiry._id}')">
+
+    Reply
+
+</button>
+                                </td>
+                                <td>
+                                    <button onclick="editProperty(this)">
+                                        Edit
+                                    </button>
+
+                                    <button onclick="deleteProperty(this)">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <!-- Add Property -->
+            <section class="dashboard-section" id="addProperty">
+
+    <h2>Add New Property</h2>
+
+    <form
+        id="propertyForm"
+        enctype="multipart/form-data"
+    >
+
+        <div class="form-row">
+
+            <div class="form-group">
+
+                <label>Property Title</label>
+
+                <input
+                    type="text"
+                    id="propertyTitle"
+                    placeholder="Example: 2 BHK Apartment"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Location</label>
+
+                <input
+                    type="text"
+                    id="propertyLocation"
+                    placeholder="Example: Kolhapur"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="form-row">
+
+            <div class="form-group">
+
+                <label>Property Type</label>
+
+                <select id="propertyType" required>
+
+                    <option value="">
+                        Select Type
+                    </option>
+
+                    <option value="Apartment">
+                        Apartment
+                    </option>
+
+                    <option value="House">
+                        House
+                    </option>
+
+                    <option value="Villa">
+                        Villa
+                    </option>
+
+                    <option value="Plot">
+                        Plot
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Price</label>
+
+                <input
+                    type="text"
+                    id="propertyPrice"
+                    placeholder="Enter price in INR"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="form-row">
+
+            <div class="form-group">
+
+                <label>Bedrooms</label>
+
+                <input
+                    type="number"
+                    id="propertyBedrooms"
+                    placeholder="Example: 2"
+                    min="0"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Bathrooms</label>
+
+                <input
+                    type="number"
+                    id="propertyBathrooms"
+                    placeholder="Example: 2"
+                    min="0"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Area (sq.ft)</label>
+
+                <input
+                    type="number"
+                    id="propertyArea"
+                    placeholder="Example: 1200"
+                    min="0"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Property Description</label>
+
+            <textarea
+                id="propertyDescription"
+                rows="5"
+                placeholder="Enter property details..."
+                required
+            ></textarea>
+
+        </div>
+
+
+        <!-- Multiple Property Images -->
+
+        <div class="form-group">
+
+            <label>
+                Property Images
+            </label>
+
+            <input
+    type="file"
+    id="propertyImages"
+    accept="image/png,image/jpeg,image/jpg,image/webp"
+    multiple="multiple"
+>
+
+            <small>
+                You can select multiple images of the property.
+            </small>
+
+        </div>
+
+
+        <!-- Property Documents -->
+
+        <div class="form-group">
+
+            <label>
+                Property Documents
+            </label>
+
+            <input
+                type="file"
+                id="propertyDocuments"
+                accept=".pdf,.jpg,.jpeg,.png"
+                multiple
+            >
+
+            <small>
+                Upload property documents such as ownership papers,
+                floor plans or other verification documents.
+            </small>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="primary-btn">
+
+            Add Property
+
+        </button>
+
+
+        <p id="propertyMessage"></p>
+
+    </form>
+
+</section>
+
+
+            <!-- Inquiries -->
+            <section class="dashboard-section" id="inquiries">
+
+                <div class="section-header">
+
+                    <h2>Recent Inquiries</h2>
+
+                </div>
+
+
+                <div class="inquiry-list" id="agentInquiryList">
+
+                    <div class="inquiry-item">
+
+                        <div>
+                            <h3>Mayuresh Mane</h3>
+
+                            <p>
+                                Interested in 2 BHK Apartment,
+                                Kolhapur
+                            </p>
+                        </div>
+
+                        <span class="status-new">
+                            New
+                        </span>
+
+                    </div>
+
+
+                    <div class="inquiry-item">
+
+                        <div>
+                            <h3>Rahul Patil</h3>
+
+                            <p>
+                                Interested in 3 BHK Villa,
+                                Pune
+                            </p>
+                        </div>
+
+                        <span class="status-pending">
+                            Pending
+                        </span>
+
+                    </div>
+
+
+                    <div class="inquiry-item">
+
+                        <div>
+                            <h3>Sneha Desai</h3>
+
+                            <p>
+                                Asked about property availability.
+                            </p>
+                        </div>
+
+                        <span class="status-active">
+                            Replied
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- Messages -->
+            <section class="dashboard-section" id="messages">
+
+                <h2>Messages</h2>
+
+                <p>
+                    You can communicate with users who have
+                    submitted property inquiries.
+                </p>
+
+                <button onclick="showMessage()">
+                    Open Messages
+                </button>
+
+                <p id="messageText"></p>
+
+            </section>
+
+
+            <!-- Profile -->
+            <section class="dashboard-section" id="profile">
+
+                <h2>Agent Profile</h2>
+
+                <div class="profile-box">
+
+                    <p>
+                        <strong>Name:</strong>
+                        Property Agent
+                    </p>
+
+                    <p>
+                        <strong>Email:</strong>
+                        agent@example.com
+                    </p>
+
+                    <p>
+                        <strong>Agency:</strong>
+                        RealEstateAI Properties
+                    </p>
+
+                    <p>
+                        <strong>Location:</strong>
+                        Kolhapur
+                    </p>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+<script>
+
+document
+    .getElementById("propertyForm")
+    .addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+
+        const message =
+            document.getElementById("propertyMessage");
+
+
+        message.innerText =
+            "Uploading property...";
+
+        message.style.color =
+            "#2563eb";
+
+
+        // ==============================
+        // GET PROPERTY DETAILS
+        // ==============================
+
+        const title =
+            document
+            .getElementById("propertyTitle")
+            .value
+            .trim();
+
+
+        const location =
+            document
+            .getElementById("propertyLocation")
+            .value
+            .trim();
+
+
+        const type =
+            document
+            .getElementById("propertyType")
+            .value;
+
+
+        const price =
+            document
+            .getElementById("propertyPrice")
+            .value
+            .trim();
+
+
+        const bedrooms =
+            document
+            .getElementById("propertyBedrooms")
+            .value;
+
+
+        const bathrooms =
+            document
+            .getElementById("propertyBathrooms")
+            .value;
+
+
+        const area =
+            document
+            .getElementById("propertyArea")
+            .value;
+
+
+        const description =
+            document
+            .getElementById("propertyDescription")
+            .value
+            .trim();
+
+
+        // ==============================
+        // GET FILES
+        // ==============================
+
+        const imageFiles =
+            document
+            .getElementById("propertyImages")
+            .files;
+
+
+        const documentFiles =
+            document
+            .getElementById("propertyDocuments")
+            .files;
+
+
+        // ==============================
+        // CREATE FORM DATA
+        // ==============================
+
+        const formData =
+            new FormData();
+
+
+        formData.append(
+            "title",
+            title
+        );
+
+        formData.append(
+            "location",
+            location
+        );
+
+        formData.append(
+            "type",
+            type
+        );
+
+        formData.append(
+            "price",
+            price
+        );
+
+        formData.append(
+            "bedrooms",
+            bedrooms
+        );
+
+        formData.append(
+            "bathrooms",
+            bathrooms
+        );
+
+        formData.append(
+            "area",
+            area
+        );
+
+        formData.append(
+            "description",
+            description
+        );
+
+
+        // ==============================
+        // AGENT INFORMATION
+        // ==============================
+
+        formData.append(
+            "agent_name",
+            localStorage.getItem("agentName") || ""
+        );
+
+        formData.append(
+            "agent_email",
+            localStorage.getItem("agentEmail") || ""
+        );
+
+        formData.append(
+            "agent_agency",
+            localStorage.getItem("agentAgency") || ""
+        );
+
+
+        // ==============================
+        // ADD MULTIPLE IMAGES
+        // ==============================
+
+        for (
+            let i = 0;
+            i < imageFiles.length;
+            i++
+        ) {
+
+            formData.append(
+                "images",
+                imageFiles[i]
+            );
+
+        }
+
+
+        // ==============================
+        // ADD MULTIPLE DOCUMENTS
+        // ==============================
+
+        for (
+            let i = 0;
+            i < documentFiles.length;
+            i++
+        ) {
+
+            formData.append(
+                "documents",
+                documentFiles[i]
+            );
+
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/properties",
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (result.success) {
+
+                message.innerText =
+                    "✓ Property submitted successfully! Waiting for admin approval.";
+
+                message.style.color =
+                    "green";
+
+
+                document
+                    .getElementById("propertyForm")
+                    .reset();
+
+
+            } else {
+
+                message.innerText =
+                    result.message;
+
+                message.style.color =
+                    "red";
+
+            }
+
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            message.innerText =
+                "Unable to connect to the server.";
+
+            message.style.color =
+                "red";
+
+        }
+
+    });
+
+</script>
+<script>
+async function loadMyProperties() {
+
+    const table = document.getElementById("myPropertiesTable");
+
+    if (!table) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch("/api/properties");
+        const result = await response.json();
+
+        if (!result.success) {
+            return;
+        }
+
+        table.innerHTML = "";
+
+        if (result.properties.length === 0) {
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="5">
+                        No approved properties yet.
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+        result.properties.forEach(function(property) {
+
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${property.title}</td>
+                <td>${property.location}</td>
+                <td>${property.price} INR</td>
+                <td>
+                    <span class="status-active">
+                        ${property.status}
+                    </span>
+                </td>
+                <td>
+                    <button onclick="editProperty(this)">
+                        Edit
+                    </button>
+
+                    <button onclick="deleteProperty(this)">
+                        Delete
+                    </button>
+                </td>
+            `;
+
+            table.appendChild(row);
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+}
+
+loadMyProperties();
+</script>
+
+<script>
+
+async function replyToInquiry(inquiryId) {
+
+    const reply = prompt("Enter your reply to the customer:");
+
+    if (!reply || reply.trim() === "") {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            "/api/inquiries/" + inquiryId + "/reply",
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    reply: reply
+                })
+            }
+        );
+
+        const result = await response.json();
+
+        if (result.success) {
+
+            alert("Reply sent successfully!");
+
+            loadAgentInquiries();
+
+        } else {
+
+            alert(result.message);
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Unable to send reply.");
+    }
+}
+
+</script>
+
+<script>
+
+async function loadAgentInquiries() {
+
+    const inquiryList =
+        document.getElementById("agentInquiryList");
+
+    if (!inquiryList) return;
+
+    try {
+
+        const response =
+            await fetch("/api/inquiries");
+
+        const result =
+            await response.json();
+
+        if (!result.success ||
+            result.inquiries.length === 0) {
+
+            inquiryList.innerHTML = `
+                <div class="inquiry-item">
+                    <p>No inquiries received yet.</p>
+                </div>
+            `;
+
+            return;
+        }
+
+        inquiryList.innerHTML = "";
+
+        result.inquiries.forEach(function(inquiry) {
+
+            const item =
+                document.createElement("div");
+
+            item.className = "inquiry-item";
+
+            item.innerHTML = `
+                <div>
+                    <h3>${inquiry.property_title}</h3>
+
+                    <p>
+                        Customer: ${inquiry.user_name}
+                    </p>
+
+                    <p>
+                        Email: ${inquiry.user_email}
+                    </p>
+
+                    <p>
+                        Message: ${inquiry.message}
+                    </p>
+                </div>
+
+                <div>
+
+                    <span class="status-pending">
+                        ${inquiry.status}
+                    </span>
+
+                    <br><br>
+
+                    <button
+                        class="primary-btn"
+                        onclick="replyToInquiry('${inquiry._id}')">
+
+                        Reply
+
+                    </button>
+
+                </div>
+            `;
+
+            inquiryList.appendChild(item);
+
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        inquiryList.innerHTML = `
+            <div class="inquiry-item">
+                <p>Unable to load inquiries.</p>
+            </div>
+        `;
+    }
+}
+
+
+async function replyToInquiry(inquiryId) {
+
+    const reply =
+        prompt("Enter your reply to the customer:");
+
+    if (!reply || reply.trim() === "") {
+        return;
+    }
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/inquiries/" +
+                inquiryId +
+                "/reply",
+                {
+                    method: "PUT",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        reply: reply
+                    })
+                }
+            );
+
+        const result =
+            await response.json();
+
+        if (result.success) {
+
+            alert("Reply sent successfully!");
+
+            loadAgentInquiries();
+
+        } else {
+
+            alert(result.message);
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Unable to send reply.");
+    }
+}
+
+
+loadAgentInquiries();
+
+</script>
+<script>
+
+function agentLogout() {
+
+    localStorage.removeItem("agentLoggedIn");
+    localStorage.removeItem("agentName");
+    localStorage.removeItem("agentEmail");
+    localStorage.removeItem("agentAgency");
+
+    window.location.href =
+        "agent-login.html";
+}
+
+</script>
+
+    <script src="../js/main.js"></script>
+
+</body>
+</html>
